@@ -6,15 +6,17 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const catalogRouter = require('./routes/catalog');
 
 const app = express();
 
 // Set up mongoose connection
-const mongoose = require("mongoose");
-mongoose.set("strictQuery", false);
-const mongoDB = "mongodb+srv://admin:i0LcCwk6SmdntjWC@cluster0.oo1njol.mongodb.net/local_library?retryWrites=true&w=majority&appName=Cluster0";
+const mongoose = require('mongoose');
+mongoose.set('strictQuery', false);
+const mongoDB =
+  'mongodb+srv://admin:i0LcCwk6SmdntjWC@cluster0.oo1njol.mongodb.net/local_library?retryWrites=true&w=majority&appName=Cluster0';
 
-main().catch((err) => console.log(err)); 
+main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(mongoDB);
 }
@@ -31,14 +33,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/catalog', catalogRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
