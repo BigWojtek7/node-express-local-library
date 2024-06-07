@@ -93,9 +93,6 @@ exports.author_create_post = [
   }),
 ];
 
-// asyncHandler(async (req, res, next) => {
-//   res.send('NOT IMPLEMENTED: Author create POST');
-// });
 
 // Display Author delete form on GET.
 exports.author_delete_get = asyncHandler(async (req, res, next) => {

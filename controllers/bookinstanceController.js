@@ -46,7 +46,10 @@ exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
 // Handle BookInstance create on POST.
 exports.bookinstance_create_post = [
   body('book', 'Book must be specified').trim().isLength({ min: 1 }).escape(),
-  body('imprint', 'Imprint must be specified').trim().isLength({ min: 1 }).escape(),
+  body('imprint', 'Imprint must be specified')
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
   body('status').escape(),
   body('due_back', 'Invalid date')
     .optional({ values: 'falsy' })
@@ -69,7 +72,7 @@ exports.bookinstance_create_post = [
       // There are errors.
       // Render form again with sanitized values and error messages.
       const allBooks = await Book.find({}, 'title').sort({ title: 1 }).exec();
-    
+
       res.render('bookinstance_form', {
         title: 'Create BookInstance',
         book_list: allBooks,
@@ -88,12 +91,21 @@ exports.bookinstance_create_post = [
 
 // Display BookInstance delete form on GET.
 exports.bookinstance_delete_get = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: BookInstance delete GET');
+  // Get details of author and all their books (in parallel)
+  const bookinstance = await BookInstance.findById(req.params.id).exec();
+
+  res.render('bookinstance_delete', {
+    title: 'Delete Instance',
+    bookinstance: bookinstance,
+  });
 });
 
 // Handle BookInstance delete on POST.
 exports.bookinstance_delete_post = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: BookInstance delete POST');
+  // const bookinstance = await BookInstance.findById(req.params.id).exec();
+  console.log('wolter')
+  await BookInstance.findByIdAndDelete(req.body.bookinstanceid);
+  res.redirect('/catalog/bookinstances');
 });
 
 // Display BookInstance update form on GET.
