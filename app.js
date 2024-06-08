@@ -10,6 +10,15 @@ const catalogRouter = require('./routes/catalog');
 
 const app = express();
 
+const RateLimit = require('express-rate-limit');
+const limiter = RateLimit({
+  windowsMS: 1 * 60 * 1000, // 1 minute
+  max: 20,
+});
+
+// Apply rate limiter to all requests
+app.use(limiter);
+
 // Set up mongoose connection
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
